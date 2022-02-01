@@ -13,7 +13,7 @@ setuptools.setup(
     description="NIROne programming interface",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/TristanLieberherr/NIROne_package",
     packages=["nirone"],
     classifiers=[
         "Development Status :: 4 - Beta",
