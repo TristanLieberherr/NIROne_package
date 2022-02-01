@@ -2,6 +2,7 @@ import logging
 from pymodbus.client.sync import ModbusSerialClient
 from pymodbus.interfaces import Singleton
 from ctypes import BigEndianStructure, Union, c_uint16, c_uint32, c_int16, c_float
+from cachetools import TTLCache, cached
 
 
 
@@ -102,6 +103,7 @@ class NIROne(ModbusSerialClient):
         self._ctrlirp_union = CtrlIrpUnion()
 
     ## Read methods
+    @cached(cache=TTLCache(maxsize=1024, ttl=0.05))
     def read_controldata(self) -> CtrlIrpStruct:
         response = self.read_holding_registers(self.__ADDRESS_CTRLIRP, 11, unit=0x01)
         try:
@@ -112,6 +114,7 @@ class NIROne(ModbusSerialClient):
         finally:
             return self._ctrlirp_union.struct
 
+    @cached(cache=TTLCache(maxsize=1024, ttl=0.05))
     def read_values(self) -> ValVoieStruct:
         response = self.read_holding_registers(self.__ADDRESS_VALVOIES, 8, unit=0x01)
         try:
